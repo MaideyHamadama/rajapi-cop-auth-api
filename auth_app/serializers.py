@@ -66,3 +66,30 @@ class RegistrationSerializer(serializers.ModelSerializer):
             newsletter_subscription=validated_data.get('newsletter_subscription', False),
         )
         return user
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = [
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'phone_number',
+            'profile_picture',
+            'newsletter_subscription',
+            'role'
+        ]
+        read_only_fields = ['username', 'email', 'role']
+        
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+    
+    def validate(self, data):
+        if data['new_password'] != data['confirm_password']:
+            raise serializers.ValidationError("Passwords do not match")
+        return data
+    
+    

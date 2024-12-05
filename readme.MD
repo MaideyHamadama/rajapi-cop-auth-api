@@ -119,3 +119,163 @@ The response is in JSON format and has the following schema:
 }
 
  ```
+
+### Get User Profile
+
+This endpoint is used to retrieve the user's profile information.
+
+#### Request
+
+- Method: GET
+- URL: `http://127.0.0.1:8000/auth/profile/`
+- Body (form-data):
+  - No parameters required for the request body.
+
+#### Response
+
+The response is in JSON format and has the following schema:
+
+``` json
+{
+  "username": "",
+  "email": "",
+  "first_name": "",
+  "last_name": "",
+  "phone_number": "",
+  "profile_picture": null,
+  "newsletter_subscription": true,
+  "role": ""
+}
+- Status code: 200
+#### Headers
+- No specific headers are required for this request.
+
+ ```
+
+### Update Profile
+
+The `PUT` request is used to update the user's profile information.
+
+- Method: PUT
+- URL: `http://127.0.0.1:8000/auth/profile/`
+
+#### Request Body Parameters
+
+- `first_name` (text): The user's first name.
+    
+- `last_name` (text): The user's last name.
+    
+- `phone_number` (text): The user's phone number.
+    
+- `profile_picture` (file): The user's profile picture.
+    
+- `newsletter_subscription` (text): Indicates if the user is subscribed to the newsletter. 
+
+#### Response (200)
+
+The response returns the updated profile information in the following JSON schema:
+
+``` json
+{
+    "username": "",
+    "email": "",
+    "first_name": "",
+    "last_name": "",
+    "phone_number": "",
+    "profile_picture": null,
+    "newsletter_subscription": true,
+    "role": ""
+}
+
+ ```
+
+### User Change Password
+
+This endpoint allows the user to change their password.
+
+- Method: POST
+- URL: `http://127.0.0.1:8000/auth/profile/change-password/`
+
+#### Request Body
+
+- form-data
+    
+  - `old_password` (text)
+        
+  - `new_password` (text)
+        
+  - `confirm_password` (text)
+        
+#### Response
+
+The response will be in JSON format with the following schema:
+
+``` json
+{
+    "type": "object",
+    "properties": {
+        "message": {
+            "type": "string"
+        }
+    }
+}
+
+ ```
+
+This endpoint allows the user to change their password by sending a POST request to the specified URL.
+
+#### Request Body
+
+- form-data
+    
+  - `old_password` (text) : The user's current password.
+        
+  - `new_password` (text) : The new password to be set.
+        
+  - `confirm_password` (text) : Confirmation of the new password.    
+
+#### Response
+
+Upon successful execution, the API returns a JSON response with a status code of 200 and an empty message.
+
+#### Related Responses
+
+The response data from other endpoints of this API includes fields such as username, email, first name, last name, phone number, profile picture, newsletter subscription status, and role.
+
+### User Account Deactivation
+
+This endpoint is used to deactivate a user's profile.
+
+- Method: POST
+- URL: `http://127.0.0.1:8000/auth/profile/deactivate/`
+
+#### Request Body
+
+- No request body is required for this endpoint.
+    
+#### Response
+
+- Status: 200
+    
+- Content Type: application/json
+    
+- { "message": ""}
+    
+This endpoint is used to deactivate a user's profile.
+
+**Request Body**  
+This endpoint does not require any request body.
+
+**Response**  
+The response will be in the form of a JSON schema with the following fields:
+
+- `message` (string): A message indicating the status of the deactivation process.
+
+Example Response:
+
+``` json
+{
+    "message": "Account deactivated successfully."
+}
+
+ ```
