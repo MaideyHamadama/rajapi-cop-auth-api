@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('token/verify', CustomTokenVerifyView.as_view(), name='token_verify'),
     path('register/', RegisterView.as_view(), name='register'),
     path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
     path('reset-password/<uidb64>/<token>', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

@@ -2,8 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.views import TokenVerifyView
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth.hashers import check_password
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -90,7 +91,7 @@ def LogoutView(APIView):
             return Response({'detail' : 'Logged out successfully.'}, status=status.HTTP_200_OK)
         except Exception:
             return Response({"detail" : "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
     
@@ -104,7 +105,34 @@ class UserProfileView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+# Custom Token Verify view
+class CustomTokenVerifyView(TokenVerifyView):
+    def post(self, request, *args, **kwargs):
+        serializer = UserProfileSerializer(request.data)
+        token = request.data.get('token', None)
+        
+        if not token:
+            return Response({"token_valid": False, "detail": "Token is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Decode the token
+            decoded_token = AccessToken(token)
+            user_id = decoded_token['user_id']
+            user = CustomUser.objects.get(id=user_id)
+            user = CustomUser.objects.get(id=user_id)
+            user_profile = UserProfileSerializer(user).data
+            
+            return Response({
+                'token_valid' : True,
+                'user_profile' : user_profile
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            return Response({
+                'token_valid':False,
+                'detail':str(e)
+            }, status=status.HTTP_401_UNAUTHORIZED)
+            
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
     
