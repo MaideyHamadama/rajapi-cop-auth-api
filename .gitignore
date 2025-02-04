@@ -122,3 +122,7 @@ dmypy.json
 .pytype/
 
 media/
+
+__pycache__/
+
+*.pyc
