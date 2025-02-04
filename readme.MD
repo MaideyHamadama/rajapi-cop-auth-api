@@ -279,3 +279,36 @@ Example Response:
 }
 
  ```
+
+## Verify token
+
+<http://127.0.0.1:8000/auth/token/verify>
+
+The endpoint `http://127.0.0.1:8000/auth/token/verify` is a POST request used for verifying the status of a token.
+
+### Request Body
+
+The request body should be of type form-data and include the following parameters:
+
+- `token` (type: text) : The actual token.
+
+### Response
+
+The response will have a status code of 200 and a content type of `application/json`. The response body will be in the following JSON schema:
+
+``` json
+{
+    "token_valid": true,
+    "user_profile": {
+        "id": 2,
+        "username": "maidey",
+        "email": "dilanechristian2@gmail.com",
+        "first_name": "maidey",
+        "last_name": "hamadama",
+        "phone_number": "1234567890",
+        "profile_picture": null,
+        "newsletter_subscription": false,
+        "role": "project_owner"
+    }
+}
+```
